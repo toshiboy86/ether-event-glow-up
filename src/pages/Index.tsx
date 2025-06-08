@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { Search, Calendar, MapPin, Users, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Toggle } from '@/components/ui/toggle';
 import EventCard from '@/components/EventCard';
 import CategoryFilter from '@/components/CategoryFilter';
 import ThemeFilter from '@/components/ThemeFilter';
@@ -15,6 +15,7 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedTheme, setSelectedTheme] = useState('all');
+  const [calendarView, setCalendarView] = useState(false);
 
   const events = [
     {
@@ -124,10 +125,15 @@ const Index = () => {
                   className="pl-10 w-80 bg-white/70 border-blue-200 focus:border-blue-400 rounded-xl"
                 />
               </div>
-              <Button variant="outline" size="sm" className="rounded-xl border-blue-200 hover:bg-blue-50">
-                <Calendar className="w-4 h-4 mr-2" />
+              <Toggle 
+                pressed={calendarView}
+                onPressedChange={setCalendarView}
+                variant="outline" 
+                className="rounded-xl border-blue-200 hover:bg-blue-50 data-[state=on]:bg-blue-100"
+              >
                 Calendar
-              </Button>
+                <Calendar className="w-4 h-4 ml-2" />
+              </Toggle>
             </div>
           </div>
         </div>
