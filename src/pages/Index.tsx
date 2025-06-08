@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, Calendar, MapPin, Users, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Toggle } from '@/components/ui/toggle';
 import EventCard from '@/components/EventCard';
+import EventCalendar from '@/components/EventCalendar';
 import CategoryFilter from '@/components/CategoryFilter';
 import ThemeFilter from '@/components/ThemeFilter';
 import RegionFilter from '@/components/RegionFilter';
@@ -211,6 +211,13 @@ const Index = () => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Calendar Component */}
+      <section className="px-4 sm:px-6 lg:px-8 pb-8">
+        <div className="max-w-7xl mx-auto">
+          <EventCalendar events={events} isVisible={calendarView} />
         </div>
       </section>
 
