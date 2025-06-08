@@ -1,311 +1,205 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { Input } from "@/components/ui/input";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-} from "@/components/ui/command";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ViewControls } from "@/components/ViewControls";
+
+import React, { useState } from 'react';
+import { Search, Calendar, MapPin, Users, Filter } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import EventCard from '@/components/EventCard';
+import CategoryFilter from '@/components/CategoryFilter';
+import ThemeFilter from '@/components/ThemeFilter';
+import Newsletter from '@/components/Newsletter';
+import Footer from '@/components/Footer';
 
 const Index = () => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
-  const [open, setOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [showAllTags, setShowAllTags] = useState(false);
-  const [currentView, setCurrentView] = useState<'calendar' | 'list'>('calendar');
-  const [calendarVisible, setCalendarVisible] = useState(true);
-
-  const tags = [
-    "Conference",
-    "Hackathon",
-    "Workshop",
-    "Meetup",
-    "Web3",
-    "DeFi",
-    "NFT",
-    "DAO",
-    "Gaming",
-    "Infrastructure",
-    "Security",
-    "Privacy",
-    "Research",
-    "Community",
-    "Education",
-    "Art",
-    "Culture",
-    "Social Impact",
-    "Sustainability",
-  ];
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedTheme, setSelectedTheme] = useState('all');
 
   const events = [
     {
       id: 1,
-      title: "ETHGlobal New York",
-      date: "2024-09-20",
-      location: "New York, USA",
-      tags: ["Conference", "Hackathon", "Web3"],
+      title: "Edge Esmeralda",
+      location: "Esmeralda, USA",
+      date: "May 24 - May 31, 2025",
+      attendees: 250,
+      type: "Conference",
+      status: "upcoming",
+      description: "A premier conference focusing on cutting-edge blockchain technology and Ethereum development.",
+      tags: ["DeFi", "ZK-SNARKs", "Ethereum Ecosystem"]
     },
     {
       id: 2,
-      title: "Devcon 7",
-      date: "2024-11-12",
-      location: "Bogota, Colombia",
-      tags: ["Conference", "Web3", "DeFi"],
+      title: "Protocol Berg v2",
+      location: "Berlin, Germany",
+      date: "Jun 18 - Jun 15, 2025",
+      attendees: 800,
+      type: "Conference",
+      status: "upcoming",
+      description: "Deep dive into protocol development and blockchain infrastructure with leading developers.",
+      tags: ["Protocol Development", "Infrastructure"]
     },
     {
       id: 3,
-      title: "ETHDenver",
-      date: "2025-02-14",
-      location: "Denver, USA",
-      tags: ["Conference", "Hackathon", "DAO"],
+      title: "ETHKyiv",
+      location: "Kyiv, Ukraine",
+      date: "Jun 15 - Jun 30, 2025",
+      attendees: 600,
+      type: "Hackathon",
+      status: "upcoming",
+      description: "Ukraine's premier Ethereum hackathon bringing together developers from across Eastern Europe.",
+      tags: ["Hackathon", "Eastern Europe", "Web3"]
     },
     {
       id: 4,
-      title: "NFT.NYC",
-      date: "2024-11-06",
-      location: "New York, USA",
-      tags: ["Conference", "NFT", "Art"],
+      title: "DappCon",
+      location: "Berlin, Germany",
+      date: "Sep 10 - Sep 12, 2025",
+      attendees: 1500,
+      type: "Conference",
+      status: "upcoming",
+      description: "The leading conference for Ethereum dApp developers and the decentralized web community.",
+      tags: ["dApps", "Decentralized Web", "Berlin"]
     },
     {
       id: 5,
-      title: "Lisbon Blockchain Week",
-      date: "2024-10-21",
-      location: "Lisbon, Portugal",
-      tags: ["Conference", "Web3", "Infrastructure"],
+      title: "ETHMilan",
+      location: "Milan, Italy",
+      date: "Jan 20 - Jan 25, 2025",
+      attendees: 900,
+      type: "Conference",
+      status: "past",
+      description: "Exploring the intersection of traditional finance and DeFi in the heart of Italy.",
+      tags: ["DeFi", "Traditional Finance", "Italy"]
     },
     {
       id: 6,
-      title: "ETHWaterloo",
-      date: "2024-09-27",
-      location: "Waterloo, Canada",
-      tags: ["Hackathon", "Web3", "Education"],
-    },
-    {
-      id: 7,
-      title: "DappCon",
-      date: "2024-09-09",
-      location: "Berlin, Germany",
-      tags: ["Conference", "Web3", "Gaming"],
-    },
-    {
-      id: 8,
-      title: "Solana Breakpoint",
-      date: "2024-09-18",
-      location: "Lisbon, Portugal",
-      tags: ["Conference", "Web3", "Infrastructure"],
-    },
-    {
-      id: 9,
-      title: "Cosmoverse",
-      date: "2024-10-02",
-      location: "Istanbul, Turkey",
-      tags: ["Conference", "Web3", "Community"],
-    },
-    {
-      id: 10,
-      title: "Avalanche Summit",
-      date: "2025-03-01",
-      location: "Barcelona, Spain",
-      tags: ["Conference", "Web3", "DeFi"],
-    },
+      title: "NFT NYC",
+      location: "NYC, USA",
+      date: "Jun 25 - Jun 30, 2025",
+      attendees: 2000,
+      type: "Conference",
+      status: "ongoing",
+      description: "The largest NFT conference bringing together artists, developers, and collectors.",
+      tags: ["NFTs", "Digital Art", "NYC"]
+    }
   ];
 
-  const filteredEvents = events.filter((event) => {
-    const dateMatch = date ? event.date === format(date, "yyyy-MM-dd") : true;
-    const tagMatch =
-      selectedTags.length > 0 ? selectedTags.every((tag) => event.tags.includes(tag)) : true;
-    const searchMatch = search
-      ? event.title.toLowerCase().includes(search.toLowerCase()) ||
-        event.location.toLowerCase().includes(search.toLowerCase())
-      : true;
-    return dateMatch && tagMatch && searchMatch;
+  const filteredEvents = events.filter(event => {
+    const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         event.location.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || event.type.toLowerCase() === selectedCategory;
+    const matchesTheme = selectedTheme === 'all' || event.tags.some(tag => 
+      tag.toLowerCase().includes(selectedTheme.toLowerCase())
+    );
+    
+    return matchesSearch && matchesCategory && matchesTheme;
   });
 
-  const handleViewChange = (view: 'calendar' | 'list') => {
-    setCurrentView(view);
-  };
-
-  const handleCalendarToggle = () => {
-    setCalendarVisible(!calendarVisible);
-  };
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50">
       {/* Header */}
-      <header className="border-b bg-card">
-        <div className="container mx-auto px-4 py-4">
+      <header className="bg-white/80 backdrop-blur-md border-b border-blue-100 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">Ethereum Events</h1>
-              <p className="text-muted-foreground">Discover protocol events worldwide</p>
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                <span className="text-white font-bold text-lg">Ξ</span>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Ethereum Events
+                </h1>
+                <p className="text-sm text-gray-600">discover.protocol.events</p>
+              </div>
             </div>
-            <ViewControls
-              currentView={currentView}
-              onViewChange={handleViewChange}
-              calendarVisible={calendarVisible}
-              onCalendarToggle={handleCalendarToggle}
-            />
+            
+            <div className="flex items-center space-x-4">
+              <div className="relative hidden md:block">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  placeholder="Search events by location..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 w-80 bg-white/70 border-blue-200 focus:border-blue-400 rounded-xl"
+                />
+              </div>
+              <Button variant="outline" size="sm" className="rounded-xl border-blue-200 hover:bg-blue-50">
+                <Calendar className="w-4 h-4 mr-2" />
+                Calendar
+              </Button>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Filters */}
-      <section className="border-b">
-        <div className="container mx-auto flex flex-col gap-4 px-4 py-4 md:flex-row">
-          {/* Date Picker */}
-          <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant={"outline"}
-                className={cn(
-                  "w-[300px] justify-start text-left font-normal",
-                  !date && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? format(date, "PPP") : <span>Pick a date</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border shadow-sm" />
-            </PopoverContent>
-          </Popover>
-
-          {/* Search Bar */}
-          <Input type="search" placeholder="Search events or locations..." value={search} onChange={(e) => setSearch(e.target.value)} />
-
-          {/* Tags Filter */}
-          <Command>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" role="combobox" aria-expanded={open} className="w-[200px] justify-between">
-                  Tags
-                  <span className="ml-2 flex h-4 w-4 items-center justify-center rounded-full bg-muted text-xs text-muted-foreground">
-                    {selectedTags.length}
-                  </span>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0">
-                <CommandInput placeholder="Search tags..." />
-                <CommandList>
-                  <CommandEmpty>No tags found.</CommandEmpty>
-                  <CommandGroup heading="Tags">
-                    <ScrollArea className="h-60">
-                      {tags.slice(0, showAllTags ? tags.length : 5).map((tag) => (
-                        <CommandItem key={tag} onSelect={() => {
-                          if (selectedTags.includes(tag)) {
-                            setSelectedTags(selectedTags.filter((t) => t !== tag));
-                          } else {
-                            setSelectedTags([...selectedTags, tag]);
-                          }
-                        }}>
-                          <div className="mr-2 flex h-4 w-4 items-center justify-center">
-                            <Checkbox
-                              checked={selectedTags.includes(tag)}
-                            />
-                          </div>
-                          <span>{tag}</span>
-                        </CommandItem>
-                      ))}
-                    </ScrollArea>
-                  </CommandGroup>
-                  {tags.length > 5 && (
-                    <>
-                      <CommandSeparator />
-                      <CommandItem onSelect={() => setShowAllTags(!showAllTags)}>
-                        {showAllTags ? "Show less" : "Show more"}
-                      </CommandItem>
-                    </>
-                  )}
-                </CommandList>
-              </PopoverContent>
-            </Popover>
-          </Command>
+      {/* Hero Section */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+            A curated selection of{' '}
+            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500 bg-clip-text text-transparent">
+              conferences, hackathons, and gatherings
+            </span>
+            <br />
+            across the global Ethereum ecosystem
+          </h2>
         </div>
       </section>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        <div className="flex gap-8">
-          {/* Events List/Grid */}
-          <div className="flex-1">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredEvents.map((event) => (
-                <Card key={event.id}>
-                  <CardHeader>
-                    <CardTitle>{event.title}</CardTitle>
-                    <CardDescription>
-                      {format(new Date(event.date), "PPP")} - {event.location}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex gap-2">
-                      {event.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary">{tag}</Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          {/* Calendar Sidebar - conditionally rendered */}
-          {calendarVisible && (
-            <div className="w-80 lg:block">
-              <div className="sticky top-4">
-                <div className="rounded-lg border bg-card p-6">
-                  <h3 className="mb-4 text-lg font-semibold">Event Calendar</h3>
-                  <div className="text-sm text-muted-foreground">
-                    Calendar view coming soon...
-                  </div>
+      {/* Filters */}
+      <section className="px-4 sm:px-6 lg:px-8 mb-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-blue-100 shadow-lg">
+            <div className="space-y-6">
+              <CategoryFilter 
+                selectedCategory={selectedCategory} 
+                onCategoryChange={setSelectedCategory} 
+              />
+              <ThemeFilter 
+                selectedTheme={selectedTheme} 
+                onThemeChange={setSelectedTheme} 
+              />
+              
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="flex items-center space-x-4">
+                  <Button variant="outline" size="sm" className="rounded-xl">
+                    <Filter className="w-4 h-4 mr-2" />
+                    All Regions
+                  </Button>
+                  <Button variant="outline" size="sm" className="rounded-xl">
+                    <Calendar className="w-4 h-4 mr-2" />
+                    All Timeline
+                  </Button>
+                  <span className="text-sm text-gray-600">Only Ongoing/Upcoming</span>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-gray-700">Events Calendar 2025</p>
+                  <p className="text-sm text-gray-500">{filteredEvents.length} events found</p>
                 </div>
               </div>
             </div>
-          )}
-        </div>
-      </main>
-
-      {/* Newsletter Signup */}
-      <section className="border-t bg-secondary">
-        <div className="container mx-auto px-4 py-12">
-          <div className="grid gap-6 md:grid-cols-2">
-            <div>
-              <h2 className="text-2xl font-bold">Stay in the loop</h2>
-              <p className="text-muted-foreground">
-                Subscribe to our newsletter and never miss an event.
-              </p>
-            </div>
-            <div className="flex items-center">
-              <Input type="email" placeholder="Enter your email..." className="mr-4" />
-              <Button>Subscribe</Button>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-muted">
-        <div className="container mx-auto px-4 py-8 text-center text-muted-foreground">
-          <p>© 2024 Ethereum Events. All rights reserved.</p>
+      {/* Events Grid */}
+      <section className="px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="max-w-7xl mx-auto">
+          <h3 className="text-2xl font-bold text-gray-900 mb-8">Events Calendar 2025</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredEvents.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
+          </div>
         </div>
-      </footer>
+      </section>
+
+      {/* Newsletter */}
+      <Newsletter />
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
