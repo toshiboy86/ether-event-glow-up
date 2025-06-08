@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Calendar, MapPin, Users, Filter } from 'lucide-react';
+import { Search, Calendar, MapPin, Users, Filter, Grid, List } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -13,6 +13,7 @@ import RegionFilter from '@/components/RegionFilter';
 import MonthFilter from '@/components/MonthFilter';
 import Newsletter from '@/components/Newsletter';
 import Footer from '@/components/Footer';
+import EventListView from '@/components/EventListView';
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -21,6 +22,7 @@ const Index = () => {
   const [selectedRegion, setSelectedRegion] = useState('all');
   const [selectedMonth, setSelectedMonth] = useState('all');
   const [calendarView, setCalendarView] = useState(false);
+  const [listView, setListView] = useState(false);
 
   const events = [
     {
@@ -150,6 +152,27 @@ const Index = () => {
                   className="pl-10 w-80 bg-white/70 border-blue-200 focus:border-blue-400 rounded-xl"
                 />
               </div>
+              
+              {/* Grid/List View Toggle */}
+              <div className="flex items-center space-x-1">
+                <Toggle 
+                  pressed={!listView}
+                  onPressedChange={() => setListView(false)}
+                  variant="outline" 
+                  className="rounded-xl border-blue-200 hover:bg-blue-50 data-[state=on]:bg-blue-100"
+                >
+                  <Grid className="w-4 h-4" />
+                </Toggle>
+                <Toggle 
+                  pressed={listView}
+                  onPressedChange={() => setListView(true)}
+                  variant="outline" 
+                  className="rounded-xl border-blue-200 hover:bg-blue-50 data-[state=on]:bg-blue-100"
+                >
+                  <List className="w-4 h-4" />
+                </Toggle>
+              </div>
+              
               <Toggle 
                 pressed={calendarView}
                 onPressedChange={setCalendarView}
@@ -221,15 +244,19 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Events Grid */}
+      {/* Events Grid/List */}
       <section className="px-4 sm:px-6 lg:px-8 pb-16">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-2xl font-bold text-gray-900 mb-8">Events Calendar 2025</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
-            ))}
-          </div>
+          {listView ? (
+            <EventListView events={filteredEvents} />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredEvents.map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
