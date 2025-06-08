@@ -80,13 +80,29 @@ const EventCalendar = ({ events, isVisible }: EventCalendarProps) => {
 
   const getEventColor = (event: Event) => {
     const eventTitle = event.title.toLowerCase();
-    if (eventTitle.includes('edge')) return 'bg-emerald-200 text-emerald-800';
-    if (eventTitle.includes('protocol')) return 'bg-orange-200 text-orange-800';
-    if (eventTitle.includes('ethkyiv')) return 'bg-yellow-200 text-yellow-800';
-    if (eventTitle.includes('dappcon')) return 'bg-amber-200 text-amber-800';
-    if (eventTitle.includes('nft')) return 'bg-purple-200 text-purple-800';
-    if (eventTitle.includes('ethcc')) return 'bg-teal-200 text-teal-800';
-    return 'bg-blue-200 text-blue-800';
+    
+    // Assign specific colors based on event names to match the reference image
+    if (eventTitle.includes('edge esmeralda')) return 'bg-green-300 text-green-800 border-l-4 border-green-500';
+    if (eventTitle.includes('protocol berg')) return 'bg-orange-300 text-orange-800 border-l-4 border-orange-500';
+    if (eventTitle.includes('ethkyiv')) return 'bg-cyan-300 text-cyan-800 border-l-4 border-cyan-500';
+    if (eventTitle.includes('dappcon')) return 'bg-yellow-300 text-yellow-800 border-l-4 border-yellow-500';
+    if (eventTitle.includes('ethmilan')) return 'bg-pink-300 text-pink-800 border-l-4 border-pink-500';
+    if (eventTitle.includes('nft nyc')) return 'bg-purple-300 text-purple-800 border-l-4 border-purple-500';
+    if (eventTitle.includes('ethcc')) return 'bg-teal-300 text-teal-800 border-l-4 border-teal-500';
+    if (eventTitle.includes('permissionless')) return 'bg-blue-300 text-blue-800 border-l-4 border-blue-500';
+    if (eventTitle.includes('ethcluj')) return 'bg-amber-300 text-amber-800 border-l-4 border-amber-500';
+    
+    // Default colors for other events
+    const colors = [
+      'bg-red-300 text-red-800 border-l-4 border-red-500',
+      'bg-indigo-300 text-indigo-800 border-l-4 border-indigo-500',
+      'bg-rose-300 text-rose-800 border-l-4 border-rose-500',
+      'bg-lime-300 text-lime-800 border-l-4 border-lime-500',
+      'bg-sky-300 text-sky-800 border-l-4 border-sky-500',
+      'bg-violet-300 text-violet-800 border-l-4 border-violet-500'
+    ];
+    
+    return colors[event.id % colors.length];
   };
 
   const navigateMonth = (direction: 'prev' | 'next') => {
@@ -147,23 +163,26 @@ const EventCalendar = ({ events, isVisible }: EventCalendarProps) => {
           return (
             <div
               key={index}
-              className={`min-h-[100px] p-1 border border-gray-100 rounded-lg ${
+              className={`min-h-[120px] p-1 border border-gray-100 rounded-lg ${
                 day ? 'bg-white' : 'bg-gray-50'
               }`}
             >
               {day && (
                 <>
-                  <div className="text-sm font-medium text-gray-700 mb-1">
+                  <div className="text-sm font-medium text-gray-700 mb-1 p-1">
                     {day}
                   </div>
                   <div className="space-y-1">
                     {dayEvents.map((event, eventIndex) => (
                       <div
                         key={`${event.id}-${eventIndex}`}
-                        className={`text-xs px-2 py-1 rounded-md truncate ${getEventColor(event)}`}
+                        className={`text-xs px-2 py-1 rounded-md ${getEventColor(event)} font-medium shadow-sm`}
                         title={`${event.title} - ${event.location}`}
                       >
-                        {event.title}
+                        <div className="flex items-center space-x-1">
+                          <span className="w-2 h-2 bg-current rounded-full opacity-60"></span>
+                          <span className="truncate">{event.title}</span>
+                        </div>
                       </div>
                     ))}
                   </div>
