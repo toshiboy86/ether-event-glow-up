@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MapPin, Users, Calendar } from 'lucide-react';
+import { MapPin, Users, Calendar, Thermometer } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
@@ -49,6 +49,20 @@ const EventCard = ({ event }: EventCardProps) => {
     }
   };
 
+  const getFlagEmoji = (location: string) => {
+    if (location.includes('USA')) return '🇺🇸';
+    if (location.includes('Germany')) return '🇩🇪';
+    if (location.includes('Ukraine')) return '🇺🇦';
+    if (location.includes('Italy')) return '🇮🇹';
+    return '🌍';
+  };
+
+  const getTemperature = () => {
+    // Mock temperature data - in a real app this would come from an API
+    const temps = ['Max: 28.9°C / Min: 8.6°C', 'Max: 22.1°C / Min: 12.3°C', 'Max: 25.5°C / Min: 15.2°C'];
+    return temps[Math.floor(Math.random() * temps.length)];
+  };
+
   return (
     <Card className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:scale-105 rounded-2xl overflow-hidden">
       <CardContent className="p-6">
@@ -61,30 +75,27 @@ const EventCard = ({ event }: EventCardProps) => {
           </Badge>
         </div>
 
-        <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+        <h3 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
           {event.title}
         </h3>
 
-        <div className="space-y-2 mb-4">
+        <div className="space-y-3 mb-4">
           <div className="flex items-center text-gray-600 text-sm">
             <MapPin className="w-4 h-4 mr-2 text-blue-500" />
-            {event.location}
+            <span className="mr-2">{event.location}</span>
+            <span className="text-lg">{getFlagEmoji(event.location)}</span>
           </div>
           <div className="flex items-center text-gray-600 text-sm">
             <Calendar className="w-4 h-4 mr-2 text-purple-500" />
             {event.date}
           </div>
           <div className="flex items-center text-gray-600 text-sm">
-            <Users className="w-4 h-4 mr-2 text-green-500" />
-            {event.attendees.toLocaleString()} attendees
+            <Thermometer className="w-4 h-4 mr-2 text-orange-500" />
+            Temp: {getTemperature()}
           </div>
         </div>
 
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-          {event.description}
-        </p>
-
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mb-4">
           {event.tags.slice(0, 3).map((tag, index) => (
             <Badge 
               key={index} 
@@ -99,6 +110,25 @@ const EventCard = ({ event }: EventCardProps) => {
               +{event.tags.length - 3} more
             </Badge>
           )}
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="flex items-center text-gray-600 text-sm">
+            <Users className="w-4 h-4 mr-2 text-green-500" />
+            {event.attendees.toLocaleString()} attendees
+          </div>
+          
+          <div className="flex items-center space-x-3">
+            <button className="text-gray-400 hover:text-gray-600 transition-colors">
+              ✕
+            </button>
+            <button className="text-gray-400 hover:text-gray-600 transition-colors">
+              🔖
+            </button>
+            <button className="text-gray-400 hover:text-gray-600 transition-colors">
+              🌐
+            </button>
+          </div>
         </div>
       </CardContent>
     </Card>
