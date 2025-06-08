@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Search, Calendar, MapPin, Users, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,6 +9,8 @@ import { Toggle } from '@/components/ui/toggle';
 import EventCard from '@/components/EventCard';
 import CategoryFilter from '@/components/CategoryFilter';
 import ThemeFilter from '@/components/ThemeFilter';
+import RegionFilter from '@/components/RegionFilter';
+import MonthFilter from '@/components/MonthFilter';
 import Newsletter from '@/components/Newsletter';
 import Footer from '@/components/Footer';
 
@@ -15,6 +18,8 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedTheme, setSelectedTheme] = useState('all');
+  const [selectedRegion, setSelectedRegion] = useState('all');
+  const [selectedMonth, setSelectedMonth] = useState('all');
   const [calendarView, setCalendarView] = useState(false);
 
   const events = [
@@ -94,7 +99,27 @@ const Index = () => {
       tag.toLowerCase().includes(selectedTheme.toLowerCase())
     );
     
-    return matchesSearch && matchesCategory && matchesTheme;
+    // Region filtering logic
+    const matchesRegion = selectedRegion === 'all' || (() => {
+      const location = event.location.toLowerCase();
+      switch (selectedRegion) {
+        case 'asia': return location.includes('tokyo') || location.includes('singapore') || location.includes('seoul');
+        case 'europe': return location.includes('berlin') || location.includes('london') || location.includes('milan') || location.includes('kyiv');
+        case 'north-america': return location.includes('usa') || location.includes('nyc') || location.includes('canada');
+        case 'south-america': return location.includes('brazil') || location.includes('argentina') || location.includes('chile');
+        case 'africa': return location.includes('cape town') || location.includes('lagos') || location.includes('cairo');
+        case 'oceania': return location.includes('sydney') || location.includes('melbourne') || location.includes('auckland');
+        default: return true;
+      }
+    })();
+
+    // Month filtering logic (simplified - in real app would parse actual dates)
+    const matchesMonth = selectedMonth === 'all' || (() => {
+      const eventDate = event.date.toLowerCase();
+      return eventDate.includes(selectedMonth);
+    })();
+    
+    return matchesSearch && matchesCategory && matchesTheme && matchesRegion && matchesMonth;
   });
 
   return (
@@ -169,14 +194,14 @@ const Index = () => {
               
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center space-x-4">
-                  <Button variant="outline" size="sm" className="rounded-xl">
-                    <Filter className="w-4 h-4 mr-2" />
-                    All Regions
-                  </Button>
-                  <Button variant="outline" size="sm" className="rounded-xl">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    All Timeline
-                  </Button>
+                  <RegionFilter 
+                    selectedRegion={selectedRegion} 
+                    onRegionChange={setSelectedRegion} 
+                  />
+                  <MonthFilter 
+                    selectedMonth={selectedMonth} 
+                    onMonthChange={setSelectedMonth} 
+                  />
                   <span className="text-sm text-gray-600">Only Ongoing/Upcoming</span>
                 </div>
                 <div className="text-right">
