@@ -2,18 +2,9 @@
 import React from 'react';
 import { MapPin, Users, Calendar, Thermometer } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { EventCardProps } from '@/lib/data';
 
-interface Event {
-  id: number;
-  title: string;
-  location: string;
-  date: string;
-  attendees: number;
-  type: string;
-  status: string;
-  description: string;
-  tags: string[];
-}
+type Event = EventCardProps['event'];
 
 interface EventListViewProps {
   events: Event[];
@@ -72,16 +63,16 @@ const EventListView = ({ events }: EventListViewProps) => {
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <div className="flex items-center space-x-3 mb-4">
-                <Badge className={`text-xs px-3 py-1 rounded-full border ${getTypeColor(event.type)}`}>
-                  {event.type}
+                <Badge className={`text-xs px-3 py-1 rounded-full border ${getTypeColor(event.venueType)}`}>
+                  {event.venueType}
                 </Badge>
-                <Badge className={`text-xs px-3 py-1 rounded-full border ${getStatusColor(event.status)}`}>
+                {/* <Badge className={`text-xs px-3 py-1 rounded-full border ${getStatusColor(event.status)}`}>
                   {event.status}
-                </Badge>
+                </Badge> */}
               </div>
 
               <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
-                {event.title}
+                {event.name}
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
@@ -92,7 +83,7 @@ const EventListView = ({ events }: EventListViewProps) => {
                 </div>
                 <div className="flex items-center text-gray-600 text-sm">
                   <Calendar className="w-4 h-4 mr-2 text-purple-500" />
-                  {event.date}
+                  {event.startDateTime.toLocaleDateString()}
                 </div>
                 <div className="flex items-center text-gray-600 text-sm">
                   <Thermometer className="w-4 h-4 mr-2 text-orange-500" />
@@ -101,7 +92,7 @@ const EventListView = ({ events }: EventListViewProps) => {
               </div>
 
               <div className="flex flex-wrap gap-2 mb-4">
-                {event.tags.slice(0, 5).map((tag, index) => (
+                {event.categories.slice(0, 5).map((tag, index) => (
                   <Badge 
                     key={index} 
                     variant="secondary" 
@@ -110,30 +101,11 @@ const EventListView = ({ events }: EventListViewProps) => {
                     {tag}
                   </Badge>
                 ))}
-                {event.tags.length > 5 && (
+                {event.domains.length > 5 && (
                   <Badge variant="secondary" className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-lg">
-                    +{event.tags.length - 5} more
+                    +{event.domains.length - 5} more
                   </Badge>
                 )}
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center text-gray-600 text-sm">
-                  <Users className="w-4 h-4 mr-2 text-green-500" />
-                  {event.attendees.toLocaleString()} attendees
-                </div>
-                
-                <div className="flex items-center space-x-3">
-                  <button className="text-gray-400 hover:text-gray-600 transition-colors">
-                    ✕
-                  </button>
-                  <button className="text-gray-400 hover:text-gray-600 transition-colors">
-                    🔖
-                  </button>
-                  <button className="text-gray-400 hover:text-gray-600 transition-colors">
-                    🌐
-                  </button>
-                </div>
               </div>
             </div>
           </div>

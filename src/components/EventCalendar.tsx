@@ -1,20 +1,10 @@
-
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { EventCardProps } from '@/lib/data';
 
-interface Event {
-  id: number;
-  title: string;
-  location: string;
-  date: string;
-  attendees: number;
-  type: string;
-  status: string;
-  description: string;
-  tags: string[];
-}
+type Event = EventCardProps['event'];
 
 interface EventCalendarProps {
   events: Event[];
@@ -42,57 +32,37 @@ const EventCalendar = ({ events, isVisible }: EventCalendarProps) => {
     const startingDayOfWeek = firstDay.getDay();
 
     const days = [];
-    
-    // Add empty cells for days before the first day of the month
     for (let i = 0; i < startingDayOfWeek; i++) {
       days.push(null);
     }
-
-    // Add all days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       days.push(day);
     }
-
     return days;
   };
 
   const getEventsForDay = (day: number) => {
     if (!day) return [];
-    
     return events.filter(event => {
-      // Simple date matching - in a real app, you'd parse the actual dates
-      const eventDate = event.date.toLowerCase();
-      const monthName = monthNames[currentDate.getMonth()].toLowerCase();
-      
-      // Check if event is in current month and matches the day
-      if (eventDate.includes(monthName)) {
-        // Extract day numbers from date string (simplified logic)
-        const dayMatch = eventDate.match(/\d+/g);
-        if (dayMatch) {
-          const startDay = parseInt(dayMatch[0]);
-          const endDay = dayMatch[1] ? parseInt(dayMatch[1]) : startDay;
-          return day >= startDay && day <= endDay;
-        }
-      }
-      return false;
+      const eventStart = new Date(event.startDateTime);
+      const eventEnd = new Date(event.endDateTime);
+      const isSameMonth = eventStart.getMonth() === currentDate.getMonth() && eventStart.getFullYear() === currentDate.getFullYear();
+      if (!isSameMonth) return false;
+      return day >= eventStart.getDate() && day <= eventEnd.getDate();
     });
   };
 
   const getEventColor = (event: Event) => {
-    const eventTitle = event.title.toLowerCase();
-    
-    // Assign specific colors based on event names to match the reference image
-    if (eventTitle.includes('edge esmeralda')) return 'bg-green-300 text-green-800 border-l-4 border-green-500';
-    if (eventTitle.includes('protocol berg')) return 'bg-orange-300 text-orange-800 border-l-4 border-orange-500';
-    if (eventTitle.includes('ethkyiv')) return 'bg-cyan-300 text-cyan-800 border-l-4 border-cyan-500';
-    if (eventTitle.includes('dappcon')) return 'bg-yellow-300 text-yellow-800 border-l-4 border-yellow-500';
-    if (eventTitle.includes('ethmilan')) return 'bg-pink-300 text-pink-800 border-l-4 border-pink-500';
-    if (eventTitle.includes('nft nyc')) return 'bg-purple-300 text-purple-800 border-l-4 border-purple-500';
-    if (eventTitle.includes('ethcc')) return 'bg-teal-300 text-teal-800 border-l-4 border-teal-500';
-    if (eventTitle.includes('permissionless')) return 'bg-blue-300 text-blue-800 border-l-4 border-blue-500';
-    if (eventTitle.includes('ethcluj')) return 'bg-amber-300 text-amber-800 border-l-4 border-amber-500';
-    
-    // Default colors for other events
+    const eventName = event.name.toLowerCase();
+    if (eventName.includes('edge esmeralda')) return 'bg-green-300 text-green-800 border-l-4 border-green-500';
+    if (eventName.includes('protocol berg')) return 'bg-orange-300 text-orange-800 border-l-4 border-orange-500';
+    if (eventName.includes('ethkyiv')) return 'bg-cyan-300 text-cyan-800 border-l-4 border-cyan-500';
+    if (eventName.includes('dappcon')) return 'bg-yellow-300 text-yellow-800 border-l-4 border-yellow-500';
+    if (eventName.includes('ethmilan')) return 'bg-pink-300 text-pink-800 border-l-4 border-pink-500';
+    if (eventName.includes('nft nyc')) return 'bg-purple-300 text-purple-800 border-l-4 border-purple-500';
+    if (eventName.includes('ethcc')) return 'bg-teal-300 text-teal-800 border-l-4 border-teal-500';
+    if (eventName.includes('permissionless')) return 'bg-blue-300 text-blue-800 border-l-4 border-blue-500';
+    if (eventName.includes('ethcluj')) return 'bg-amber-300 text-amber-800 border-l-4 border-amber-500';
     const colors = [
       'bg-red-300 text-red-800 border-l-4 border-red-500',
       'bg-indigo-300 text-indigo-800 border-l-4 border-indigo-500',
@@ -101,7 +71,6 @@ const EventCalendar = ({ events, isVisible }: EventCalendarProps) => {
       'bg-sky-300 text-sky-800 border-l-4 border-sky-500',
       'bg-violet-300 text-violet-800 border-l-4 border-violet-500'
     ];
-    
     return colors[event.id % colors.length];
   };
 
@@ -145,7 +114,6 @@ const EventCalendar = ({ events, isVisible }: EventCalendarProps) => {
           </Button>
         </div>
       </div>
-
       {/* Days of Week Header */}
       <div className="grid grid-cols-7 gap-1 mb-2">
         {daysOfWeek.map(day => (
@@ -154,18 +122,14 @@ const EventCalendar = ({ events, isVisible }: EventCalendarProps) => {
           </div>
         ))}
       </div>
-
       {/* Calendar Grid */}
       <div className="grid grid-cols-7 gap-1">
         {days.map((day, index) => {
           const dayEvents = day ? getEventsForDay(day) : [];
-          
           return (
             <div
               key={index}
-              className={`min-h-[120px] p-1 border border-gray-100 rounded-lg ${
-                day ? 'bg-white' : 'bg-gray-50'
-              }`}
+              className={`min-h-[120px] p-1 border border-gray-100 rounded-lg ${day ? 'bg-white' : 'bg-gray-50'}`}
             >
               {day && (
                 <>
@@ -177,11 +141,11 @@ const EventCalendar = ({ events, isVisible }: EventCalendarProps) => {
                       <div
                         key={`${event.id}-${eventIndex}`}
                         className={`text-xs px-2 py-1 rounded-md ${getEventColor(event)} font-medium shadow-sm`}
-                        title={`${event.title} - ${event.location}`}
+                        title={`${event.name} - ${event.location}`}
                       >
                         <div className="flex items-center space-x-1">
                           <span className="w-2 h-2 bg-current rounded-full opacity-60"></span>
-                          <span className="truncate">{event.title}</span>
+                          <span className="truncate">{event.name}</span>
                         </div>
                       </div>
                     ))}

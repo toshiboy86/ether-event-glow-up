@@ -24,80 +24,246 @@ const Index = () => {
   const [calendarView, setCalendarView] = useState(false);
   const [listView, setListView] = useState(false);
 
-  const events = [
+  const events =[
     {
       id: 1,
-      title: "Edge Esmeralda",
-      location: "Esmeralda, USA",
-      date: "May 24 - May 31, 2025",
-      attendees: 250,
-      type: "Conference",
-      status: "upcoming",
-      description: "A premier conference focusing on cutting-edge blockchain technology and Ethereum development.",
-      tags: ["DeFi", "ZK-SNARKs", "Ethereum Ecosystem"]
+      name: "FarCon",
+      location: "NYC, USA",
+      region: "North America",
+      country: "United States",
+      countryCode: "US",
+      categories: ["Hackathon", "Summit"],
+      domains: ["Web3 General"],
+      venueType: "in_person",
+      startDateTime: new Date("2025-05-01T00:00:00"),
+      endDateTime: new Date("2025-05-04T00:00:00"),
+      links: ["https://farcon.nyc/"],
+      socials: ["https://warpcast.com/~/channel/farcon-nyc"],
+      communities: [],
+      hasTimezone: false,
+      weatherMetrics: {
+        temp: 19.5,
+        tempmax: 29.4,
+        tempmin: 11.2,
+        humidity: 59.9,
+      },
     },
     {
       id: 2,
-      title: "Protocol Berg v2",
-      location: "Berlin, Germany",
-      date: "Jun 18 - Jun 15, 2025",
-      attendees: 800,
-      type: "Conference",
-      status: "upcoming",
-      description: "Deep dive into protocol development and blockchain infrastructure with leading developers.",
-      tags: ["Protocol Development", "Infrastructure"]
+      name: "ETH Tokyo",
+      location: "Tokyo, Japan",
+      region: "Asia",
+      country: "Japan",
+      countryCode: "JP",
+      categories: ["Hackathon"],
+      domains: ["DeFi", "NFT"],
+      venueType: "in_person",
+      startDateTime: new Date("2025-06-10T00:00:00"),
+      endDateTime: new Date("2025-06-12T00:00:00"),
+      links: ["https://ethtokyo.com/"],
+      socials: ["https://twitter.com/ethtokyo"],
+      communities: [],
+      hasTimezone: true,
+      weatherMetrics: {
+        temp: 22.1,
+        tempmax: 27.0,
+        tempmin: 18.3,
+        humidity: 70.2,
+      },
     },
     {
       id: 3,
-      title: "ETHKyiv",
-      location: "Kyiv, Ukraine",
-      date: "Jun 15 - Jun 30, 2025",
-      attendees: 600,
-      type: "Hackathon",
-      status: "upcoming",
-      description: "Ukraine's premier Ethereum hackathon bringing together developers from across Eastern Europe.",
-      tags: ["Hackathon", "Eastern Europe", "Web3"]
+      name: "ETH Berlin",
+      location: "Berlin, Germany",
+      region: "Europe",
+      country: "Germany",
+      countryCode: "DE",
+      categories: ["Conference"],
+      domains: ["Web3 General"],
+      venueType: "in_person",
+      startDateTime: new Date("2025-07-15T00:00:00"),
+      endDateTime: new Date("2025-07-18T00:00:00"),
+      links: ["https://ethberlin.com/"],
+      socials: ["https://twitter.com/ethberlin"],
+      communities: [],
+      hasTimezone: true,
+      weatherMetrics: {
+        temp: 24.0,
+        tempmax: 30.0,
+        tempmin: 17.5,
+        humidity: 60.0,
+      },
     },
     {
       id: 4,
-      title: "DappCon",
-      location: "Berlin, Germany",
-      date: "Sep 10 - Sep 12, 2025",
-      attendees: 1500,
-      type: "Conference",
-      status: "upcoming",
-      description: "The leading conference for Ethereum dApp developers and the decentralized web community.",
-      tags: ["dApps", "Decentralized Web", "Berlin"]
+      name: "ETH Denver",
+      location: "Denver, USA",
+      region: "North America",
+      country: "United States",
+      countryCode: "US",
+      categories: ["Hackathon", "Summit"],
+      domains: ["DeFi"],
+      venueType: "in_person",
+      startDateTime: new Date("2025-08-20T00:00:00"),
+      endDateTime: new Date("2025-08-25T00:00:00"),
+      links: ["https://ethdenver.com/"],
+      socials: ["https://twitter.com/ethdenver"],
+      communities: [],
+      hasTimezone: false,
+      weatherMetrics: {
+        temp: 27.5,
+        tempmax: 33.0,
+        tempmin: 20.0,
+        humidity: 40.0,
+      },
     },
     {
       id: 5,
-      title: "ETHMilan",
-      location: "Milan, Italy",
-      date: "Jan 20 - Jan 25, 2025",
-      attendees: 900,
-      type: "Conference",
-      status: "past",
-      description: "Exploring the intersection of traditional finance and DeFi in the heart of Italy.",
-      tags: ["DeFi", "Traditional Finance", "Italy"]
+      name: "ETH Singapore",
+      location: "Singapore",
+      region: "Asia",
+      country: "Singapore",
+      countryCode: "SG",
+      categories: ["Conference"],
+      domains: ["NFT", "Gaming"],
+      venueType: "in_person",
+      startDateTime: new Date("2025-09-05T00:00:00"),
+      endDateTime: new Date("2025-09-07T00:00:00"),
+      links: ["https://ethsingapore.com/"],
+      socials: ["https://twitter.com/ethsingapore"],
+      communities: [],
+      hasTimezone: true,
+      weatherMetrics: {
+        temp: 30.0,
+        tempmax: 33.5,
+        tempmin: 27.0,
+        humidity: 80.0,
+      },
     },
     {
       id: 6,
-      title: "NFT NYC",
-      location: "NYC, USA",
-      date: "Jun 25 - Jun 30, 2025",
-      attendees: 2000,
-      type: "Conference",
-      status: "ongoing",
-      description: "The largest NFT conference bringing together artists, developers, and collectors.",
-      tags: ["NFTs", "Digital Art", "NYC"]
-    }
+      name: "ETH Paris",
+      location: "Paris, France",
+      region: "Europe",
+      country: "France",
+      countryCode: "FR",
+      categories: ["Summit"],
+      domains: ["Web3 General", "DeFi"],
+      venueType: "in_person",
+      startDateTime: new Date("2025-10-10T00:00:00"),
+      endDateTime: new Date("2025-10-13T00:00:00"),
+      links: ["https://ethparis.com/"],
+      socials: ["https://twitter.com/ethparis"],
+      communities: [],
+      hasTimezone: true,
+      weatherMetrics: {
+        temp: 18.0,
+        tempmax: 22.0,
+        tempmin: 14.0,
+        humidity: 65.0,
+      },
+    },
+    {
+      id: 7,
+      name: "ETH London",
+      location: "London, UK",
+      region: "Europe",
+      country: "United Kingdom",
+      countryCode: "GB",
+      categories: ["Hackathon"],
+      domains: ["DeFi", "Web3 General"],
+      venueType: "in_person",
+      startDateTime: new Date("2025-11-01T00:00:00"),
+      endDateTime: new Date("2025-11-03T00:00:00"),
+      links: ["https://ethlondon.com/"],
+      socials: ["https://twitter.com/ethlondon"],
+      communities: [],
+      hasTimezone: true,
+      weatherMetrics: {
+        temp: 15.0,
+        tempmax: 18.0,
+        tempmin: 10.0,
+        humidity: 75.0,
+      },
+    },
+    {
+      id: 8,
+      name: "ETH Mexico",
+      location: "Mexico City, Mexico",
+      region: "North America",
+      country: "Mexico",
+      countryCode: "MX",
+      categories: ["Summit"],
+      domains: ["NFT"],
+      venueType: "in_person",
+      startDateTime: new Date("2025-12-05T00:00:00"),
+      endDateTime: new Date("2025-12-08T00:00:00"),
+      links: ["https://ethmexico.com/"],
+      socials: ["https://twitter.com/ethmexico"],
+      communities: [],
+      hasTimezone: false,
+      weatherMetrics: {
+        temp: 21.0,
+        tempmax: 25.0,
+        tempmin: 16.0,
+        humidity: 55.0,
+      },
+    },
+    {
+      id: 9,
+      name: "ETH India",
+      location: "Bangalore, India",
+      region: "Asia",
+      country: "India",
+      countryCode: "IN",
+      categories: ["Hackathon", "Conference"],
+      domains: ["Web3 General", "Gaming"],
+      venueType: "in_person",
+      startDateTime: new Date("2026-01-15T00:00:00"),
+      endDateTime: new Date("2026-01-18T00:00:00"),
+      links: ["https://ethindia.com/"],
+      socials: ["https://twitter.com/ethindia"],
+      communities: [],
+      hasTimezone: true,
+      weatherMetrics: {
+        temp: 26.0,
+        tempmax: 30.0,
+        tempmin: 20.0,
+        humidity: 60.0,
+      },
+    },
+    {
+      id: 10,
+      name: "ETH Sydney",
+      location: "Sydney, Australia",
+      region: "Oceania",
+      country: "Australia",
+      countryCode: "AU",
+      categories: ["Summit", "Conference"],
+      domains: ["DeFi", "NFT"],
+      venueType: "in_person",
+      startDateTime: new Date("2026-02-10T00:00:00"),
+      endDateTime: new Date("2026-02-13T00:00:00"),
+      links: ["https://ethsydney.com/"],
+      socials: ["https://twitter.com/ethsydney"],
+      communities: [],
+      hasTimezone: true,
+      weatherMetrics: {
+        temp: 28.0,
+        tempmax: 32.0,
+        tempmin: 22.0,
+        humidity: 68.0,
+      },
+    },
   ];
 
   const filteredEvents = events.filter(event => {
-    const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    const matchesSearch = event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          event.location.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || event.type.toLowerCase() === selectedCategory;
-    const matchesTheme = selectedTheme === 'all' || event.tags.some(tag => 
+    const matchesCategory = selectedCategory === 'all' || event.categories.some(category => 
+      category.toLowerCase().includes(selectedCategory.toLowerCase())
+    );
+    const matchesTheme = selectedTheme === 'all' || event.domains.some(tag => 
       tag.toLowerCase().includes(selectedTheme.toLowerCase())
     );
     
@@ -117,7 +283,7 @@ const Index = () => {
 
     // Month filtering logic (simplified - in real app would parse actual dates)
     const matchesMonth = selectedMonth === 'all' || (() => {
-      const eventDate = event.date.toLowerCase();
+      const eventDate = event.startDateTime.getMonth().toString();
       return eventDate.includes(selectedMonth);
     })();
     
@@ -249,7 +415,7 @@ const Index = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredEvents.map((event) => (
-                <EventCard key={event.id} event={event} />
+                <EventCard key={event.id} event={event} viewMode="grid" />
               ))}
             </div>
           )}
