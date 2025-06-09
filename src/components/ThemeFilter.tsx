@@ -1,6 +1,16 @@
-
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
+import {
+  Palette,
+  Wallet,
+  Image as ImageIcon,
+  Lock,
+  BarChart2,
+  Shield,
+  Network,
+  Atom,
+  BookOpen,
+} from 'lucide-react';
 
 interface ThemeFilterProps {
   selectedTheme: string;
@@ -9,13 +19,15 @@ interface ThemeFilterProps {
 
 const ThemeFilter = ({ selectedTheme, onThemeChange }: ThemeFilterProps) => {
   const themes = [
-    { id: 'all', label: 'All Themes', icon: '🎨' },
-    { id: 'defi', label: 'DeFi', icon: '💰' },
-    { id: 'gaming', label: 'Gaming', icon: '🎮' },
-    { id: 'nfts', label: 'NFTs', icon: '🖼️' },
-    { id: 'privacy', label: 'Privacy', icon: '🔒' },
-    { id: 'scaling', label: 'Scaling', icon: '📈' },
-    { id: 'zk', label: 'ZK', icon: '🔐' },
+    { id: 'all', label: 'All Themes', icon: <Palette className="w-4 h-4 mr-2" /> },
+    { id: 'web3-general', label: 'Web3 General', icon: <Wallet className="w-4 h-4 mr-2" /> },
+    { id: 'nfts', label: 'NFTs', icon: <ImageIcon className="w-4 h-4 mr-2" /> },
+    { id: 'privacy', label: 'Privacy', icon: <Lock className="w-4 h-4 mr-2" /> },
+    { id: 'dapp', label: 'dApp', icon: <BarChart2 className="w-4 h-4 mr-2" /> },
+    { id: 'security', label: 'Security', icon: <Shield className="w-4 h-4 mr-2" /> },
+    { id: 'ethereum-ecosystem', label: 'Ethereum Ecosystem', icon: <Network className="w-4 h-4 mr-2" /> },
+    { id: 'decentralized-tech', label: 'Decentralized Technologies', icon: <Atom className="w-4 h-4 mr-2" /> },
+    { id: 'academics', label: 'Academics', icon: <BookOpen className="w-4 h-4 mr-2" /> },
   ];
 
   return (
@@ -33,7 +45,7 @@ const ThemeFilter = ({ selectedTheme, onThemeChange }: ThemeFilterProps) => {
             }`}
             onClick={() => onThemeChange(theme.id)}
           >
-            <span className="mr-2">{theme.icon}</span>
+            {theme.icon}
             {theme.label}
           </Badge>
         ))}
