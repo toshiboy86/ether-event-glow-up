@@ -1,6 +1,15 @@
-
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
+import {
+  Sparkles,
+  Target,
+  Zap,
+  Handshake,
+  Hammer,
+  Bitcoin,
+  Calendar,
+  Landmark,
+} from 'lucide-react';
 
 interface CategoryFilterProps {
   selectedCategory: string;
@@ -9,13 +18,14 @@ interface CategoryFilterProps {
 
 const CategoryFilter = ({ selectedCategory, onCategoryChange }: CategoryFilterProps) => {
   const categories = [
-    { id: 'all', label: 'All Categories', icon: '🌟' },
-    { id: 'conference', label: 'Conference', icon: '🎯' },
-    { id: 'hackathon', label: 'Hackathon', icon: '⚡' },
-    { id: 'meetup', label: 'Meetup', icon: '🤝' },
-    { id: 'workshop', label: 'Workshop', icon: '🛠️' },
-    { id: 'bitcoin talk', label: 'Bitcoin Talk', icon: '₿' },
-    { id: 'event', label: 'Event', icon: '📅' },
+    { id: 'all', label: 'All Categories', icon: <Sparkles className="w-4 h-4 mr-2" /> },
+    { id: 'conference', label: 'Conference', icon: <Target className="w-4 h-4 mr-2" /> },
+    { id: 'hackathon', label: 'Hackathon', icon: <Zap className="w-4 h-4 mr-2" /> },
+    { id: 'meetup', label: 'Meetup', icon: <Handshake className="w-4 h-4 mr-2" /> },
+    { id: 'workshop', label: 'Workshop', icon: <Hammer className="w-4 h-4 mr-2" /> },
+    { id: 'bitcoin talk', label: 'Popup Village/City', icon: <Bitcoin className="w-4 h-4 mr-2" /> },
+    { id: 'blockchain week', label: 'Blockchain Week', icon: <Calendar className="w-4 h-4 mr-2" /> },
+    { id: 'summit', label: 'Summit', icon: <Landmark className="w-4 h-4 mr-2" /> },
   ];
 
   return (
@@ -33,7 +43,7 @@ const CategoryFilter = ({ selectedCategory, onCategoryChange }: CategoryFilterPr
             }`}
             onClick={() => onCategoryChange(category.id)}
           >
-            <span className="mr-2">{category.icon}</span>
+            {category.icon}
             {category.label}
           </Badge>
         ))}
