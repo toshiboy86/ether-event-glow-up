@@ -112,7 +112,7 @@ const EventListView = ({ events }: EventListViewProps) => {
                   onClick={() => handleSort('name')}
                   className="font-semibold text-gray-700 hover:text-blue-600 p-0 h-auto"
                   role="columnheader"
-                  aria-sort={sortField === 'name' ? sortDirection : 'none'}
+                  // aria-sort={sortField === 'name' ? sortDirection : 'none'}
                 >
                   Event Name
                   <SortIcon field="name" />
@@ -124,7 +124,7 @@ const EventListView = ({ events }: EventListViewProps) => {
                   onClick={() => handleSort('location')}
                   className="font-semibold text-gray-700 hover:text-blue-600 p-0 h-auto"
                   role="columnheader"
-                  aria-sort={sortField === 'location' ? sortDirection : 'none'}
+                  // aria-sort={sortField === 'location' ? sortDirection : 'none'}
                 >
                   Location
                   <SortIcon field="location" />
@@ -136,7 +136,7 @@ const EventListView = ({ events }: EventListViewProps) => {
                   onClick={() => handleSort('startDateTime')}
                   className="font-semibold text-gray-700 hover:text-blue-600 p-0 h-auto"
                   role="columnheader"
-                  aria-sort={sortField === 'startDateTime' ? sortDirection : 'none'}
+                  // aria-sort={sortField === 'startDateTime' ? sortDirection : 'none'}
                 >
                   Date
                   <SortIcon field="startDateTime" />
@@ -148,7 +148,7 @@ const EventListView = ({ events }: EventListViewProps) => {
                   onClick={() => handleSort('venueType')}
                   className="font-semibold text-gray-700 hover:text-blue-600 p-0 h-auto"
                   role="columnheader"
-                  aria-sort={sortField === 'venueType' ? sortDirection : 'none'}
+                  // aria-sort={sortField === 'venueType' ? sortDirection : 'none'}
                 >
                   Type
                   <SortIcon field="venueType" />
