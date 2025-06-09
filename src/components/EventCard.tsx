@@ -36,18 +36,31 @@ const EventCard = ({ event }: EventCardProps) => {
   return (
     <Card className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:scale-105 rounded-2xl overflow-hidden">
       <CardContent className="p-6">
-        <div className="flex items-start justify-between mb-4">
+        <div className="flex items-start justify-between">
+          <h3 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
+            {event.name}
+          </h3>
           <Badge className={`text-xs px-3 py-1 rounded-full border ${getVenueTypeColor(event.venueType)}`}>
             {event.venueType}
           </Badge>
-          <Badge className="text-xs px-3 py-1 rounded-full border bg-gray-100 text-gray-700 border-gray-200">
-            {event.region}
-          </Badge>
         </div>
 
-        <h3 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
-          {event.name}
-        </h3>
+        <div className="flex flex-wrap gap-2 mb-3">
+          {event.domains.slice(0, 3).map((cat, idx) => (
+            <Badge
+              key={idx}
+              variant="secondary"
+              className="text-xs px-2 py-1 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 border-0 rounded-lg"
+            >
+              {cat}
+            </Badge>
+          ))}
+          {event.categories.length > 3 && (
+            <Badge variant="secondary" className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-lg">
+              +{event.categories.length - 3} more
+            </Badge>
+          )}
+        </div>
 
         <div className="space-y-3 mb-4">
           <div className="flex items-center text-gray-600 text-sm">
@@ -76,13 +89,14 @@ const EventCard = ({ event }: EventCardProps) => {
             <Badge
               key={idx}
               variant="secondary"
-              className="text-xs px-2 py-1 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 border-0 rounded-lg"
+              className="text-xs px-2 py-1 rounded-xl bg-gradient-to-r from-gray-100 via-gray-200 to-gray-50 text-gray-700 border-0 shadow-sm font-semibold"
+              style={{ letterSpacing: '0.03em' }}
             >
-              {cat}
+              #{cat}
             </Badge>
           ))}
           {event.categories.length > 3 && (
-            <Badge variant="secondary" className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-lg">
+            <Badge variant="secondary" className="text-xs px-2 py-1 rounded-xl bg-gray-200 text-gray-500 border-0 font-semibold">
               +{event.categories.length - 3} more
             </Badge>
           )}
