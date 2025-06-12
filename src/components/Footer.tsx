@@ -5,7 +5,7 @@ import { Github, Twitter, MessageCircle, Send } from 'lucide-react';
 const Footer = () => {
   const footerSections = [
     {
-      title: 'Ethereum Events',
+      title: 'Eth Stars',
       description: 'Discover and join the crypto events across the global Ethereum ecosystem',
       links: []
     },
@@ -70,7 +70,7 @@ const Footer = () => {
         <div className="border-t border-blue-100 pt-8 mt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-500 text-sm mb-4 md:mb-0">
-              © 2025 Ethereum Events. All rights reserved.
+              © 2025 Eth Stars. All rights reserved.
             </p>
             <div className="flex items-center space-x-6">
               <a href="#" className="text-gray-400 hover:text-blue-500 transition-colors duration-200">
