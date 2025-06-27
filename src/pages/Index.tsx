@@ -1,20 +1,13 @@
 import React, { useState } from 'react';
-import { Search, Calendar, MapPin, Users, Filter, Grid, List } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Calendar, Grid, List } from 'lucide-react';
 import { Toggle } from '@/components/ui/toggle';
 import EventCard from '@/components/EventCard';
 import EventCalendar from '@/components/EventCalendar';
-import CategoryFilter from '@/components/CategoryFilter';
-import ThemeFilter from '@/components/ThemeFilter';
-import RegionFilter from '@/components/RegionFilter';
-import MonthFilter from '@/components/MonthFilter';
 import Newsletter from '@/components/Newsletter';
 import Footer from '@/components/Footer';
 import EventListView from '@/components/EventListView';
 import FeaturedEvents from '@/components/FeaturedEvents';
+import FilterPanel from '@/components/FilterPanel';
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -24,6 +17,8 @@ const Index = () => {
   const [selectedMonth, setSelectedMonth] = useState('all');
   const [calendarView, setCalendarView] = useState(false);
   const [listView, setListView] = useState(false);
+  const [startThisMonth, setStartThisMonth] = useState(false);
+  const [activeEventsOnly, setActiveEventsOnly] = useState(false);
 
   const events =[
     {
@@ -305,17 +300,7 @@ const Index = () => {
               </div>
             </div>
             
-            <div className="flex items-center space-x-4">
-              <div className="relative hidden md:block">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  placeholder="Search events by location..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 w-80 bg-white/70 border-blue-200 focus:border-blue-400 rounded-xl"
-                />
-              </div>
-              
+            <div className="flex items-center space-x-4">              
               {/* Grid/List View Toggle */}
               <div className="flex items-center space-x-1">
                 <Toggle 
@@ -367,39 +352,25 @@ const Index = () => {
       {/* Featured Events Section */}
       <FeaturedEvents events={events} />
 
-      {/* Filters */}
+      {/* New Filter Panel */}
       <section className="px-4 sm:px-6 lg:px-8 mb-8">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-blue-100 shadow-lg">
-            <div className="space-y-6">
-              <CategoryFilter 
-                selectedCategory={selectedCategory} 
-                onCategoryChange={setSelectedCategory} 
-              />
-              <ThemeFilter 
-                selectedTheme={selectedTheme} 
-                onThemeChange={setSelectedTheme} 
-              />
-              
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="flex items-center space-x-4">
-                  <RegionFilter 
-                    selectedRegion={selectedRegion} 
-                    onRegionChange={setSelectedRegion} 
-                  />
-                  <MonthFilter 
-                    selectedMonth={selectedMonth} 
-                    onMonthChange={setSelectedMonth} 
-                  />
-                  <span className="text-sm text-gray-600">Only Ongoing/Upcoming</span>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm font-medium text-gray-700">Events Calendar 2025</p>
-                  <p className="text-sm text-gray-500">{filteredEvents.length} events found</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <FilterPanel
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+            selectedTheme={selectedTheme}
+            onThemeChange={setSelectedTheme}
+            selectedRegion={selectedRegion}
+            onRegionChange={setSelectedRegion}
+            selectedMonth={selectedMonth}
+            onMonthChange={setSelectedMonth}
+            startThisMonth={startThisMonth}
+            onStartThisMonthChange={setStartThisMonth}
+            activeEventsOnly={activeEventsOnly}
+            onActiveEventsOnlyChange={setActiveEventsOnly}
+          />
         </div>
       </section>
 
