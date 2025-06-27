@@ -14,6 +14,7 @@ import MonthFilter from '@/components/MonthFilter';
 import Newsletter from '@/components/Newsletter';
 import Footer from '@/components/Footer';
 import EventListView from '@/components/EventListView';
+import FeaturedEvents from '@/components/FeaturedEvents';
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -362,6 +363,9 @@ const Index = () => {
           </h2>
         </div>
       </section>
+
+      {/* Featured Events Section */}
+      <FeaturedEvents events={events} />
 
       {/* Filters */}
       <section className="px-4 sm:px-6 lg:px-8 mb-8">
